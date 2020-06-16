@@ -1,0 +1,24 @@
+{{ with secret "pki/issue/web-certs" "common_name=www.demo.com" }}
+[
+    {
+        "op": "replace",
+        "path": "/Demo/HTTPS/webcert/remark",
+        "value": "Updated on {{ timestamp }}"
+    },
+    {
+        "op": "replace",
+        "path": "/Demo/HTTPS/webcert/certificate",
+        "value": "{{ .Data.certificate | toJSON | replaceAll "\"" "" }}"
+    },
+    {
+        "op": "replace",
+        "path": "/Demo/HTTPS/webcert/privateKey",
+        "value": "{{ .Data.private_key | toJSON | replaceAll "\"" "" }}"
+    },
+    {
+        "op": "replace",
+        "path": "/Demo/HTTPS/webcert/chainCA",
+        "value": "{{ .Data.issuing_ca | toJSON | replaceAll "\"" "" }}"
+    }
+]
+{{ end }}
