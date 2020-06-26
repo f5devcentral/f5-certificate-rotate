@@ -1,11 +1,80 @@
 #!/bin/bash
 
 set -e
+## put consul stuff
+
+#!/bin/bash
+
+#Utils
+sudo apt-get install unzip
+
+#Download Consul
+CONSUL_VERSION="1.7.2"
+curl --silent --remote-name https://releases.hashicorp.com/consul/${CONSUL_VERSION}/consul_${CONSUL_VERSION}_linux_amd64.zip
+
+#Install Consul
+unzip consul_${CONSUL_VERSION}_linux_amd64.zip
+sudo chown root:root consul
+sudo mv consul /usr/local/bin/
+consul -autocomplete-install
+complete -C /usr/local/bin/consul consul
+
+#Create Consul User
+sudo useradd --system --home /etc/consul.d --shell /bin/false consul
+sudo mkdir --parents /opt/consul
+sudo chown --recursive consul:consul /opt/consul
+
+#Create Systemd Config
+sudo cat << EOF > /etc/systemd/system/consul.service
+[Unit]
+Description="HashiCorp Consul - A service mesh solution"
+Documentation=https://www.consul.io/
+Requires=network-online.target
+After=network-online.target
+ConditionFileNotEmpty=/etc/consul.d/consul.hcl
+
+[Service]
+#User=consul
+#Group=consul
+ExecStart=/usr/local/bin/consul agent -config-dir=/etc/consul.d/
+ExecReload=/usr/local/bin/consul reload
+KillMode=process
+Restart=always
+LimitNOFILE=65536
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+#Create config dir
+sudo mkdir --parents /etc/consul.d
+sudo touch /etc/consul.d/consul.hcl
+sudo chown --recursive consul:consul /etc/consul.d
+sudo chmod 640 /etc/consul.d/consul.hcl
+
+cat << EOF > /etc/consul.d/consul.hcl
+datacenter = "dc1"
+data_dir = "/opt/consul"
+ui = true
+connect {
+  enabled = true
+}
+EOF
+
+cat << EOF > /etc/consul.d/server.hcl
+server = true
+bootstrap_expect = 1
+
+client_addr = "0.0.0.0"
+retry_join = ["provider=aws tag_key=Env tag_value=consul"]
+EOF
 
 #   Utils
 sudo apt-get install unzip
 sudo snap install jq
-
+VAULT_VERSION="1.3.2"
+CONSUL_TEMPLATE_VERSION="0.24.1"
+CONSUL_VERSION="1.7.2"
 #   Move to Temp Directory
 cd /tmp
 
@@ -15,6 +84,8 @@ cd /tmp
 #   Download
 curl --silent --remote-name https://releases.hashicorp.com/vault/${VAULT_VERSION}/vault_${VAULT_VERSION}_linux_amd64.zip
 
+VAULT_VERSION="1.3.2"
+CONSUL_TEMPLATE_VERSION="0.24.1"
 #   Install
 unzip vault_${VAULT_VERSION}_linux_amd64.zip
 sudo chown root:root vault
@@ -169,11 +240,12 @@ do
 done
 
 echo "Installing RPM"
-./install-rpm.sh ${BIG_IP}:8443 ${F5_USERNAME}:${F5_PASSWORD} f5-appsvcs-3.17.1-1.noarch.rpm
+./install-rpm.sh ${aws_eip.f5.public_ip}:8443 admin:random_string.password.result f5-appsvcs-3.17.1-1.noarch.rpm
 
 sleep 30
 
 echo "Creating BIG-IP VIP"
-curl -X POST --silent --insecure -u ${F5_USERNAME}:${F5_PASSWORD} -H 'Content-Type: application/json' -d @https.json https://35.224.91.158:8443/mgmt/shared/appsvcs/declare | jq
+curl -X POST --silent --insecure -u admin:random_string.password.result -H 'Content-Type: application/json' -d @https.json https://${aws_eip.f5.public_ip}:8443/mgmt/shared/appsvcs/declare | jq
 
 exit 0
+
