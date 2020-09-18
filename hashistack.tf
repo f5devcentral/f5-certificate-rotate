@@ -11,5 +11,103 @@ resource "aws_instance" "vault" {
     Name = "${var.prefix}-vault"
     Env  = "vault"
   }
+  provisioner "file" {
+    source      = "templates/certs.tmpl"
+    destination = "/tmp/certs.tmpl"
+    connection {
+      type        = "ssh"
+      user        = "ubuntu"
+      private_key = file("${aws_key_pair.demo.key_name}.pem")
+      host        = aws_instance.vault.public_ip
+    }
+  }
+
+  provisioner "file" {
+    source      = "templates/https.tmpl"
+    destination = "/tmp/https.tmpl"
+    connection {
+      type        = "ssh"
+      user        = "ubuntu"
+      private_key = file("${aws_key_pair.demo.key_name}.pem")
+      host        = aws_instance.vault.public_ip
+    }
+  }
+
+  provisioner "file" {
+    source      = "templates/app-pol.hcl"
+    destination = "/tmp/app-pol.hcl"
+    connection {
+      type        = "ssh"
+      user        = "ubuntu"
+      private_key = file("${aws_key_pair.demo.key_name}.pem")
+      host        = aws_instance.vault.public_ip
+    }
+  }
+  provisioner "file" {
+    source      = "templates/agent-config.hcl"
+    destination = "/tmp/agent-config.hcl"
+    connection {
+      type        = "ssh"
+      user        = "ubuntu"
+      private_key = file("${aws_key_pair.demo.key_name}.pem")
+      host        = aws_instance.vault.public_ip
+    }
+  }
+
+  provisioner "file" {
+    source      = "as3/stuff.sh"
+    destination = "/tmp/stuff.sh"
+    connection {
+      type        = "ssh"
+      user        = "ubuntu"
+      private_key = file("${aws_key_pair.demo.key_name}.pem")
+      host        = aws_instance.vault.public_ip
+    }
+  }
+  provisioner "file" {
+    source      = "as3/updt.sh"
+    destination = "/tmp/updt.sh"
+    connection {
+      type        = "ssh"
+      user        = "ubuntu"
+      private_key = file("${aws_key_pair.demo.key_name}.pem")
+      host        = aws_instance.vault.public_ip
+    }
+  }
+
+   provisioner "file" {
+    source      = "as3/install-rpm.sh"
+    destination = "/tmp/install-rpm.sh"
+    connection {
+      type        = "ssh"
+      user        = "ubuntu"
+      private_key = file("${aws_key_pair.demo.key_name}.pem")
+      host        = aws_instance.vault.public_ip
+    }
+  }
+   provisioner "file" {
+    source      = "as3/f5-appsvcs-3.21.0-4.noarch.rpm"
+    destination = "/tmp/f5-appsvcs-3.21.0-4.noarch.rpm"
+    connection {
+      type        = "ssh"
+      user        = "ubuntu"
+      private_key = file("${aws_key_pair.demo.key_name}.pem")
+      host        = aws_instance.vault.public_ip
+    }
+  }
+   provisioner "remote-exec" {
+        inline                  = [
+            "chmod +x /tmp/stuff.sh",
+            "chmod +x /tmp/install-rpm.sh",
+            "chmod +x /tmp/updt.sh"
+        ]
+    
+     connection {
+      type        = "ssh"
+      user        = "ubuntu"
+      private_key = file("${aws_key_pair.demo.key_name}.pem")
+      host        = aws_instance.vault.public_ip
+    }
+   }
 }
 
