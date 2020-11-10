@@ -3,7 +3,7 @@
 This repo uses HashiCorp Vault to manage SSL Certificates
 
 # What does the repo uses ?
-- Repo uses F5 BIG-IP 14.X 
+- Repo uses F5 BIG-IP VE Version 14.X 
 - HashiCorp Vault 1.5
 
 # How to use Repo ?
