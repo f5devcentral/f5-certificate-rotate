@@ -5,7 +5,7 @@ output "f5_ui" {
 }
 
 output "vault_ui" {
-  value = "http://${aws_instance.vault.public_ip}:8500"
+  value = "http://${aws_instance.vault.public_ip}:8200"
 }
 
 output "F5_Password" {
