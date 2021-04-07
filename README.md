@@ -2,6 +2,9 @@
 
 This repo uses HashiCorp Vault to manage SSL Certificates
 
+# Architecture
+![Demo Arch](rtaImage.png)
+
 # What does the repo uses ?
 - Repo uses F5 BIG-IP VE Version 14.X 
 - HashiCorp Vault 1.5
