@@ -63,7 +63,7 @@ export VAULT_TOKEN=root
 vault secrets enable pki
 
 #   Generate a Root CA
-vault write pki/root/generate/internal common_name=demo.com  > root-ca
+vault write pki/root/generate/internal common_name=demof5.com  > root-ca
 
 #   Configure a Role
 vault write pki/roles/web-certs allowed_domains=demo.com ttl=60s max_ttl=30m allow_subdomains=true allow_localhost=true generate_lease=true
