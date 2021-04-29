@@ -5,7 +5,8 @@ resource "random_string" "password" {
 
 resource "aws_instance" "f5" {
   #F5 BIGIP-14.1.0.3-0.0.6 PAYG-Good 25Mbps-190326002717
-  ami = "ami-00a9fd893d5d15cf6"
+  #ami = "ami-00a9fd893d5d15cf6" for east coast ami
+  ami = var.f5ami
 
   instance_type               = "m5.xlarge"
   private_ip                  = "10.0.0.200"

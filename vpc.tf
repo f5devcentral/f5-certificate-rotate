@@ -5,7 +5,7 @@ module "vpc" {
   name = "${var.prefix}-f5-vpc"
   cidr = "10.0.0.0/16"
 
-  azs            = ["us-east-1a"]
+  azs            = [var.sub-region]
   public_subnets = ["10.0.0.0/24"]
 
   enable_nat_gateway = true

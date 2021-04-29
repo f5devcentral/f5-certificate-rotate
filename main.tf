@@ -1,5 +1,5 @@
 provider "aws" {
-  region = "us-east-1"
+  region = var.region
 }
 locals {
   bigip_address = "${aws_eip.f5.public_ip}:8443"
