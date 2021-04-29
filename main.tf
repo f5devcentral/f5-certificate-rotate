@@ -3,10 +3,10 @@ provider "aws" {
 }
 locals {
   bigip_address = "${aws_eip.f5.public_ip}:8443"
-  update_vip  = "curl -sku admin:${random_string.password.result} -H 'Accept: application/json' -H 'Content-Type:application/json' -X PATCH -d@certs.json https://${local.bigip_address}/mgmt/shared/appsvcs/declare | jq"
-  create_vip  = "curl -sku admin:${random_string.password.result} -H 'Accept: application/json' -H 'Content-Type:application/json' -X POST -d@https.json https://${local.bigip_address}/mgmt/shared/appsvcs/declare | jq"
-  delete_vip  = "curl -sku admin:${random_string.password.result} -H 'Accept: application/json' -H 'Content-Type:application/json' -X DELETE  https://${local.bigip_address}/mgmt/shared/appsvcs/declare/Demo | jq"
-  install_as3 = "./install-rpm.sh ${local.bigip_address} admin:${random_string.password.result} f5-appsvcs-3.21.0-4.noarch.rpm"
+  update_vip    = "curl -sku admin:${random_string.password.result} -H 'Accept: application/json' -H 'Content-Type:application/json' -X PATCH -d@certs.json https://${local.bigip_address}/mgmt/shared/appsvcs/declare | jq"
+  create_vip    = "curl -sku admin:${random_string.password.result} -H 'Accept: application/json' -H 'Content-Type:application/json' -X POST -d@https.json https://${local.bigip_address}/mgmt/shared/appsvcs/declare | jq"
+  delete_vip    = "curl -sku admin:${random_string.password.result} -H 'Accept: application/json' -H 'Content-Type:application/json' -X DELETE  https://${local.bigip_address}/mgmt/shared/appsvcs/declare/Demo | jq"
+  install_as3   = "./install-rpm.sh ${local.bigip_address} admin:${random_string.password.result} f5-appsvcs-3.21.0-4.noarch.rpm"
 }
 data "aws_ami" "ubuntu" {
   most_recent = true
