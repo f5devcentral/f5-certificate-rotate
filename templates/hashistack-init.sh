@@ -62,11 +62,38 @@ export VAULT_TOKEN=root
 #   Enable the PKI Engine
 vault secrets enable pki
 
+# Tune the pki secrets engine to issue certificates with a maximum time-to-live (TTL) of 87600 hours.
+vault secrets tune -max-lease-ttl=87600h pki
+
 #   Generate a Root CA
-vault write pki/root/generate/internal common_name=demof5.com  > root-ca
+# vault write pki/root/generate/internal common_name=demof5.com  > root-ca
+
+vault write -field=certificate pki/root/generate/internal common_name=demof5.com ttl=87600h > CA_cert.crt
+
+# Configure the CA and CRL URLs.
+vault write pki/config/urls issuing_certificates="$VAULT_ADDR/v1/pki/ca" crl_distribution_points="$VAULT_ADDR/v1/pki/crl"
+
+# Generate Intermediate CA
+# Now, you are going to create an intermediate CA using the root CA you regenerated in the previous step.
+# First, enable the pki secrets engine at the pki_int path.
+vault secrets enable -path=pki_int pki
+
+#Tune the pki_int secrets engine to issue certificates with a maximum time-to-live (TTL) of 43800 hours.
+
+vault secrets tune -max-lease-ttl=43800h pki_int
+
+# Execute the following command to generate an intermediate and save the CSR as pki_intermediate.csr.
+vault write -format=json pki_int/intermediate/generate/internal common_name="demof5.com Intermediate Authority" | jq -r '.data.csr' > pki_intermediate.csr
+
+# Sign the intermediate certificate with the root CA private key, and save the generated certificate as intermediate.cert.pem.
+
+vault write -format=json pki/root/sign-intermediate csr=@pki_intermediate.csr format=pem_bundle ttl="43800h" | jq -r '.data.certificate' > intermediate.cert.pem
+
+# Once the CSR is signed and the root CA returns a certificate, it can be imported back into Vault.
+vault write pki_int/intermediate/set-signed certificate=@intermediate.cert.pem
 
 #   Configure a Role
-vault write pki/roles/web-certs allowed_domains=demof5.com ttl=160s max_ttl=30m allow_subdomains=true allow_localhost=true generate_lease=true
+# vault write pki/roles/web-certs allowed_domains=demof5.com ttl=160s max_ttl=30m allow_subdomains=true allow_localhost=true generate_lease=true
 
 #############################################################################################################################
 #############################################################################################################################
