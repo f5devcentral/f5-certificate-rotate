@@ -11,6 +11,8 @@ This repo uses HashiCorp Vault to manage SSL Certificates
 
 # How to use Repo ?
 - Git Clone repo using ``` https://github.com/scshitole/bigip-vault.git ```
+- change directory ``` cd bigip-vault ```
+- deploy ``` terraform plan && terraform apply -auto-approve ```
 - This will deploy F5 BIG-IP intance & install Vault on ubuntu on AWS
 - SSH into the ubuntu server and cd/tmp
 - Configure vault and use vaul agent
