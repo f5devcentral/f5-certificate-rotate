@@ -93,7 +93,7 @@ vault write -format=json pki/root/sign-intermediate csr=@pki_intermediate.csr fo
 vault write pki_int/intermediate/set-signed certificate=@intermediate.cert.pem
 
 #   Configure a Role
-# vault write pki/roles/web-certs allowed_domains=demof5.com ttl=160s max_ttl=30m allow_subdomains=true allow_localhost=true generate_lease=true
+vault write pki_int/roles/web-certs allowed_domains=demof5.com ttl=160s max_ttl=30m allow_subdomains=true allow_localhost=true generate_lease=true
 
 #############################################################################################################################
 #############################################################################################################################
