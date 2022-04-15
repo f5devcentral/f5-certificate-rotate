@@ -45,6 +45,7 @@ cd /tmp
 ### Configure PKI for Intermediate Certificate with roles, TTL etc
 ```vault write pki_int/roles/web-certs allowed_domains=demof5.com ttl=160s max_ttl=30m allow_subdomains=true```
 ![PKI enabled through CLI](images/pki.png)
+
 ```
 # Enable auth method as AppRole 
 vault auth enable approle
@@ -65,6 +66,7 @@ vault write -f -format=json auth/approle/role/web-certs/secret-id | jq -r '.data
 ### Run Vault agent to generate the http.json and cert.json using template files http.tpl & cert.tpl
 ```vault agent -config=agent-config.hcl -log-level=debug```
 ![Run Vault Agent](images/runagent.png)
+```
 # stuff.sh is simple shell script which makes API call to BIG-IP
  Run the command ``` bash stuff.sh ``` this will deploy the AS3 rpm  & VIP with certs on BIG-IP
 
