@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+set -e
+address="${addr}"
+username="${username}"
+password="${pwd}"
+port="${port}"
+CREATE_VIP="${CREATE_VIP}"
+INSTALL_AS3="${INSTALL_AS3}"
+echo "Installing RPM.... hold tight "
+eval "$INSTALL_AS3"
+sleep 40
+echo " \033[0;32mCreating VIP on BIG-IP using generated AS3 JSON payload ... \033[0m"
+sleep 10
+eval "$CREATE_VIP"
+

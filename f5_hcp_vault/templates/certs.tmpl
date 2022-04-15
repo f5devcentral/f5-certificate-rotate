@@ -1,0 +1,24 @@
+{{ with secret "pki_int/issue/web-certs" "common_name=www.demof5.com" }}
+[
+    {
+        "op": "replace",
+        "path": "/Demof5/HTTPS/webcert/remark",
+        "value": "Updated on {{ timestamp }}"
+    },
+    {
+        "op": "replace",
+        "path": "/Demof5/HTTPS/webcert/certificate",
+        "value": "{{ .Data.certificate | toJSON | replaceAll "\"" "" }}"
+    },
+    {
+        "op": "replace",
+        "path": "/Demof5/HTTPS/webcert/privateKey",
+        "value": "{{ .Data.private_key | toJSON | replaceAll "\"" "" }}"
+    },
+    {
+        "op": "replace",
+        "path": "/Demof5/HTTPS/webcert/chainCA",
+        "value": "{{ .Data.issuing_ca | toJSON | replaceAll "\"" "" }}"
+    }
+]
+{{ end }}

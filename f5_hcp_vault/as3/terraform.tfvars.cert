@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+set -e
+UPDATE_CERT="${UPDATE_CERT}"
+echo "Updating Certificates on BIG-IP every 160 secs using generated CERT from Vault...."
+eval "$UPDATE_CERT"
+
