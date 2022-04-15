@@ -40,6 +40,11 @@ vault secrets list
 cd /tmp
 
 # update agent file  agent-config.hcl on the vault-agent  with HCP Vault address
+ 
+
+vault {
+   address = "http://127.0.0.1:8200" <----Change this address in the file
+}
 
 ```
 ### Configure PKI for Intermediate Certificate with roles, TTL etc
