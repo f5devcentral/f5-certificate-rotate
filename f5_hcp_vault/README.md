@@ -7,7 +7,7 @@ This repo uses HashiCorp Vault to manage SSL Certificates
 
 # What does the repo uses ?
 - Repo uses F5 BIG-IP VE Version 14.X 
-- HashiCorp Vault 1.5
+- HashiCorp HCP Vault https://portal.cloud.hashicorp.com
 
 # How to use Repo ?
 - Git Clone repo using ``` https://github.com/f5devcentral/f5-certificate-rotate.git ```
