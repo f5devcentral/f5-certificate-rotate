@@ -61,9 +61,10 @@ vault read -format=json auth/approle/role/web-certs/role-id | jq -r '.data.role_
 # Vault agent gets the secret token with the role-id 
 vault write -f -format=json auth/approle/role/web-certs/secret-id | jq -r '.data.secret_id' > secretID
 
-# Run Vault agent to generate the http.json and cert.json using template files http.tpl & cert.tpl
-vault agent -config=agent-config.hcl -log-level=debug
-
+```
+### Run Vault agent to generate the http.json and cert.json using template files http.tpl & cert.tpl
+```vault agent -config=agent-config.hcl -log-level=debug```
+![Run Vault Agent](images/runagent.png)
 # stuff.sh is simple shell script which makes API call to BIG-IP
  Run the command ``` bash stuff.sh ``` this will deploy the AS3 rpm  & VIP with certs on BIG-IP
 
