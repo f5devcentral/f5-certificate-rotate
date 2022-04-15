@@ -17,7 +17,7 @@ This repo uses HashiCorp Vault to manage SSL Certificates
 - SSH into the ubuntu server and cd/tmp
 - Configure vault and use vaul agent
 ```
-export VAULT_ADDR="https://vault-cluster.vault.95dfd4f6-6078-40ed-9b82-f58d39eb209e.aws.hashicorp.cloud:8200"
+export VAULT_ADDR="https://vault-cluster.vault.some-40ed-9b82-f58d39eb209e.aws.hashicorp.cloud:8200"
 export VAULT_NAMESPACE="admin/f5dev"
 ### Generate admin token from HCP Vault 
 export VAULT_TOKEN=<cut_and paste_token>
