@@ -39,11 +39,13 @@ vault secrets list
 # Change directory to see all your files which are ulploaded using terraform
 cd /tmp
 
-# update agent file on the vault-agent  with HCP Vault address
+# update agent file  agent-config.hcl on the vault-agent  with HCP Vault address
 
-# Configure PKI for Intermediate Certificate with roles, TTL etc
+```
+### Configure PKI for Intermediate Certificate with roles, TTL etc
 vault write pki_int/roles/web-certs allowed_domains=demof5.com ttl=160s max_ttl=30m allow_subdomains=true
-
+![PKI enabled through CLI](images/pki.png)
+```
 # Enable auth method as AppRole 
 vault auth enable approle
 
