@@ -26,8 +26,8 @@ export VAULT_NAMESPACE="admin/f5dev"
 
 ```
 
-# Generate admin token from HCP Vault
-![Generate Admin Token](~/images/admintoken.png)
+### Generate admin token from HCP Vault
+![Generate Admin Token](images/admintoken.png)
 
 ```
 # Export the Vault token so that vault agent can access HCP vault through CLI 
