@@ -57,9 +57,15 @@ vault write -f -format=json auth/approle/role/web-certs/secret-id | jq -r '.data
 
 # Run Vault agent to generate the http.json and cert.json using template files http.tpl & cert.tpl
 vault agent -config=agent-config.hcl -log-level=debug
-```
-- Open a new terminal and SSH into the ubuntu server again.
-- Run the command ``` bash stuff.sh ``` this will deploy the AS3 rpm  & VIP
-- Stop the vault agent and uncomment ``` command = "bash updt.sh" ``` in the file agent-config.hcl 
-- Run ``` vault agent -config=agent-config.hcl -log-level=debug ``` to update the certs automatically
 
+# stuff.sh is simple shell script which makes API call to BIG-IP
+ Run the command ``` bash stuff.sh ``` this will deploy the AS3 rpm  & VIP with certs on BIG-IP
+
+# The previous step was done to configure VIP, Pool members on BIG-IP, we need to uncomment the command in
+the agent file so that, when the Certs get expired updt.sh script update the Certs on BIG-IP
+
+Stop the vault agent and uncomment ``` command = "bash updt.sh" ``` in the file agent-config.hcl 
+
+# Run the start the agent again so it keeps updating the Certs forever when they are about to get expired
+Run ``` vault agent -config=agent-config.hcl -log-level=debug ``` to update the certs automatically
+```
