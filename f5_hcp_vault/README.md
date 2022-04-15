@@ -25,6 +25,7 @@ export VAULT_ADDR="https://vault-cluster.vault.some-40ed-9b82-f58d39eb209e.aws.h
 export VAULT_NAMESPACE="admin/f5dev"
 
 # Generate admin token from HCP Vault
+![Generate Admin Token](~/images/admintoken.png)
 
 # Export the Vault token so that vault agent can access HCP vault through CLI 
 export VAULT_TOKEN=<cut_and paste_token>
