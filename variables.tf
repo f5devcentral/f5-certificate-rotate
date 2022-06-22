@@ -1,6 +1,6 @@
 variable "prefix" {
   description = "prefix for resources created"
-  default     = "scs-bigip-vault"
+  default     = "scs-lt"
 }
 variable "region" {
   description = "region where the infra is deployed"
@@ -14,5 +14,5 @@ variable "sub-region" {
 
 variable "f5ami" {
   description = "f5 ami in west 2"
-  default     = "ami-09ae9af26d2e96786"
+  default     = "ami-0a1e7d6045016baa5"
 }
